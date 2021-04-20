@@ -12,18 +12,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class RenewBook extends AppCompatActivity {
 
@@ -32,6 +36,8 @@ public class RenewBook extends AppCompatActivity {
     EditText daysRequired;
     Button button;
     String objectId;
+    RatingBar ratingBar;
+    ParseObject parseObject;;
 
     public static class DownloadImage extends AsyncTask<String,Void, Bitmap> {
 
@@ -85,10 +91,31 @@ public class RenewBook extends AppCompatActivity {
         }
     }
 
+    public void save(View view){
+        EditText editText = findViewById(R.id.reviewEditText);
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Record");
+        query1.whereMatches("book",objectId).whereMatches("borrower",ParseUser.getCurrentUser().getUsername());
+        query1.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(objects.size()>0){
+                    objects.get(0).put("review",editText.getText().toString());
+                    objects.get(0).saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Toast.makeText(RenewBook.this, "Rating Saved", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_renew_book);
+
 
         bookCover = findViewById(R.id.bookCover);
         titleTextView = findViewById(R.id.titleTextView);
@@ -107,6 +134,7 @@ public class RenewBook extends AppCompatActivity {
             @Override
             public void done(ParseObject object, ParseException e) {
                 if(e==null && object!=null){
+                    parseObject=object;
                     String title = object.getString("title");
                     String author = "Author: "+ object.getString("author");
                     String publisher ="Published by: " +object.getString("publisher");
@@ -135,6 +163,43 @@ public class RenewBook extends AppCompatActivity {
                 }
             }
         });
+
+        ratingBar = findViewById(R.id.ratingBar);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Record");
+                query1.whereMatches("book",objectId).whereMatches("borrower",ParseUser.getCurrentUser().getUsername());
+                query1.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if(objects.size()>0){
+                            objects.get(0).put("rating",ratingBar.getRating());
+                            objects.get(0).saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    Toast.makeText(RenewBook.this, "Rating Saved", Toast.LENGTH_SHORT).show();
+                                    if(objects.get(0).has("rating")) {
+                                        double rating = (parseObject.getInt("n")-1) * parseObject.getDouble("rating") + ratingBar.getRating();
+                                        parseObject.put("rating", rating);
+                                    }else{
+                                        double rating = (parseObject.getInt("n")) * parseObject.getDouble("rating") + ratingBar.getRating();
+                                        parseObject.increment("n");
+                                        parseObject.put("rating", rating);
+                                    }
+
+                                    parseObject.saveInBackground();
+                                }
+                            });
+
+                        }
+                    }
+                });
+            }
+        });
+
+
+
 
     }
 }

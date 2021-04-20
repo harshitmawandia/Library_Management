@@ -24,24 +24,43 @@ public class RequestActivity extends AppCompatActivity {
     ParseObject object1;
 
     public void accept(View view){
-        object1.put("availability","borrowed");
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy 'at' hh:mm:ss 'UTC'");
-        calendar.add(Calendar.DATE, +object1.getInt("daysRequired"));
-        Log.i("Date",format.format(calendar.getTime()));
+        if(object1.getString("availability").matches("requested")) {
+            calendar.add(Calendar.DATE, +object1.getInt("daysRequired"));
+            Log.i("Date", format.format(calendar.getTime()));
 
-        try {
-            Date date =format.parse(format.format(calendar.getTime()));
-            object1.put("dueDate",date);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
+            try {
+                Date date = format.parse(format.format(calendar.getTime()));
+                object1.put("dueDate", date);
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
+        }else{
+            Date date = object1.getDate("dueDate");
+            calendar.setTime(date);
+            calendar.add(calendar.DATE,object1.getInt("daysRequired"));
+            Log.i("Date", format.format(calendar.getTime()));
+
+            try {
+                Date date1 = format.parse(format.format(calendar.getTime()));
+                object1.put("dueDate", date1);
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         ParseObject object = new ParseObject("Record");
 
         object.put("book",object1.getObjectId());
         object.put("borrower",object1.get("borrower"));
+
+
+        object.saveInBackground();
+
+        object1.put("availability","borrowed");
+        object1.increment("c");
 
         object1.saveInBackground(new SaveCallback() {
             @Override
@@ -82,4 +101,6 @@ public class RequestActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

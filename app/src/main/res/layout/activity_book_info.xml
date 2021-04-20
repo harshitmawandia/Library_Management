@@ -101,6 +101,11 @@
                 android:text="Borrow"
                 android:textSize="24sp" />
 
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
         </LinearLayout>
     </ScrollView>
 

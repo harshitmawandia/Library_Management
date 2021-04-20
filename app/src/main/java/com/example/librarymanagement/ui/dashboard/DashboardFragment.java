@@ -75,8 +75,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 alertDialogue.setIcon(R.drawable.profile)
-                        .setTitle("Renew your Book")
-                        .setMessage("Do you wish to renew your Book?")
+                        .setTitle("Renew/Rate your Book")
+                        .setMessage("Do you wish to renew/rate your Book?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
