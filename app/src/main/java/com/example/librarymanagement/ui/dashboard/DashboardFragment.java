@@ -74,7 +74,7 @@ public class DashboardFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                alertDialogue.setIcon(R.drawable.profile)
+                alertDialogue.setIcon(android.R.drawable.star_on)
                         .setTitle("Renew/Rate your Book")
                         .setMessage("Do you wish to renew/rate your Book?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
