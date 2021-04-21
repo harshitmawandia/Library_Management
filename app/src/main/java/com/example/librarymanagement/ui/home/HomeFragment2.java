@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.example.librarymanagement.R;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class HomeFragment2 extends Fragment {
         root = inflater.inflate(R.layout.fragment_home2, container, false);
         AlertDialog.Builder alertDialogue = new AlertDialog.Builder(getActivity());
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("User2");
         listView = root.findViewById(R.id.listView);
         users= new ArrayList<String>();
         ids= new ArrayList<String>();
@@ -71,11 +73,12 @@ public class HomeFragment2 extends Fragment {
                         .setPositiveButton("User", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("_User");
+                                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("User2");
                                 query1.getInBackground(ids.get(position), new GetCallback<ParseObject>() {
                                     @Override
                                     public void done(ParseObject object, ParseException e) {
                                         object.put("role","user");
+                                        object.saveInBackground();
                                         users.set(position,object.getString("username")+"\nuser");
                                         arrayAdapter.notifyDataSetChanged();
                                     }
@@ -85,11 +88,14 @@ public class HomeFragment2 extends Fragment {
                         .setNegativeButton("Librarian", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("_User");
+                                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("User2");
                                 query1.getInBackground(ids.get(position), new GetCallback<ParseObject>() {
                                     @Override
                                     public void done(ParseObject object, ParseException e) {
+
                                         object.put("role","librarian");
+                                        object.saveInBackground();
+
                                         users.set(position,object.getString("username")+"\nlibrarian");
                                         arrayAdapter.notifyDataSetChanged();
                                     }

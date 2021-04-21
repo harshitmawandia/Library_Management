@@ -32,20 +32,24 @@ public class MainActivity extends AppCompatActivity {
             ParseUser.logInInBackground(username.getText().toString(), password.getText().toString(), new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
-                    if(user!=null){
-                        Log.i("Log In", "OK");
-                        Toast.makeText(MainActivity.this, "logged In", Toast.LENGTH_SHORT).show();
-
-                        if(user.getString("role").matches("user")){
-                            Intent intent = new Intent(getApplicationContext(),UserActivity.class);
-                            startActivity(intent);
-                        }else if(user.getString("role").matches("librarian")){
-                            Intent intent = new Intent(getApplicationContext(),LibrarianActivity.class);
-                            startActivity(intent);
-                        }else if(user.getString("role").matches("admin")){
-                            Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
-                            startActivity(intent);
-                        }
+                    if(ParseUser.getCurrentUser()!=null){
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("User2");
+                        query.whereMatches("username", ParseUser.getCurrentUser().getUsername());
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> objects, ParseException e) {
+                                if(objects.get(0).getString("role").matches("user")){
+                                    Intent intent = new Intent(getApplicationContext(),UserActivity.class);
+                                    startActivity(intent);
+                                }else if(objects.get(0).getString("role").matches("librarian")){
+                                    Intent intent = new Intent(getApplicationContext(),LibrarianActivity.class);
+                                    startActivity(intent);
+                                }else if(objects.get(0).getString("role").matches("admin")){
+                                    Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
 
                     }else{
                         Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -70,16 +74,25 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
 
         if(ParseUser.getCurrentUser()!=null){
-            if(ParseUser.getCurrentUser().getString("role").matches("user")){
-                Intent intent = new Intent(getApplicationContext(),UserActivity.class);
-                startActivity(intent);
-            }else if(ParseUser.getCurrentUser().getString("role").matches("librarian")){
-                Intent intent = new Intent(getApplicationContext(),LibrarianActivity.class);
-                startActivity(intent);
-            }else if(ParseUser.getCurrentUser().getString("role").matches("admin")){
-                Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
-                startActivity(intent);
-            }
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("User2");
+            query.whereMatches("username", ParseUser.getCurrentUser().getUsername());
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if(objects.get(0).getString("role").matches("user")){
+                        Intent intent = new Intent(getApplicationContext(),UserActivity.class);
+                        startActivity(intent);
+                    }else if(objects.get(0).getString("role").matches("librarian")){
+                        Intent intent = new Intent(getApplicationContext(),LibrarianActivity.class);
+                        startActivity(intent);
+                    }else if(objects.get(0).getString("role").matches("admin")){
+                        Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
+
+
         }
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());

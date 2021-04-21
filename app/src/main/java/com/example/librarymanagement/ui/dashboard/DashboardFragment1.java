@@ -34,7 +34,6 @@ import java.util.List;
 
 public class DashboardFragment1 extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
     ListView listView,borrowList;
     ArrayList<String> bookId,title,bookId1,title1;
     ArrayAdapter adapter,adapter1;
@@ -116,6 +115,7 @@ public class DashboardFragment1 extends Fragment {
                                     public void done(ParseObject object, ParseException e) {
                                         object.remove("borrower");
                                         object.remove("daysRequired");
+                                        object.remove("dueDate");
                                         object.put("availability","available");
                                         title1.remove(position);
                                         bookId1.remove(position);
@@ -128,8 +128,6 @@ public class DashboardFragment1 extends Fragment {
 
             }
         });
-
-
 
         return root;
     }

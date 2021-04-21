@@ -9,12 +9,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -24,7 +27,8 @@ import com.parse.ParseUser;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BookInfoActivity extends AppCompatActivity {
@@ -115,6 +119,7 @@ public class BookInfoActivity extends AppCompatActivity {
                     String ISBN ="ISBN: " +object.getString("ISBN");
                     String url = object.getString("url");
                     String availability = "Availability: "+object.getString("availability");
+                    String rating  = "Rating : "+ Double.toString(object.getDouble("rating"))+" stars";
 
                     DownloadImage downloadImage = new DownloadImage();
                     Bitmap bitmap = null;
@@ -129,12 +134,35 @@ public class BookInfoActivity extends AppCompatActivity {
                     authorTextView.setText(author);
                     publisherTextView.setText(publisher);
                     ISBNTextView.setText(ISBN);
-                    availabilityTextView.setText(availability);
+                    availabilityTextView.setText(availability+"\n\n"+rating);
                     Log.i("availability",availability);
                     if(!(object.getString("availability").matches("available"))){
                         button.setVisibility(View.INVISIBLE);
                         daysRequired.setVisibility(View.INVISIBLE);
                     }
+
+                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Record");
+                    ArrayList<String> list = new ArrayList<String>();
+
+
+                    ArrayAdapter adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,list);
+                    ListView listView = findViewById(R.id.ratingListView);
+                    listView.setAdapter(adapter);
+                    list.add("Reviews:");
+                    query1.whereMatches("book", objectId);
+                    query1.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> objects, ParseException e) {
+                            for(ParseObject parseObject : objects){
+                                if(parseObject.has("review")){
+
+                                    list.add(parseObject.getString("review"));
+                                    Log.i("review",parseObject.getString("review") );
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });

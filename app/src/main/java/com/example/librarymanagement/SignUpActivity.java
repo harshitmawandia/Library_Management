@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -25,15 +26,19 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(this, "Empty Field/s", Toast.LENGTH_SHORT).show();
         }else {
             ParseUser user = new ParseUser();
+            ParseObject user1 = new ParseObject("User2");
 
             user.setUsername(username.getText().toString());
             user.setPassword(password.getText().toString());
             user.setEmail(email.getText().toString());
 
+
             user.signUpInBackground(new SignUpCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
+                        user1.put("username",username.getText().toString());
+                        user1.saveInBackground();
                         Log.i("Success", "sign up successful");
                         Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
                         Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);

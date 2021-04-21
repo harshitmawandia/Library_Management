@@ -37,7 +37,7 @@ public class RenewBook extends AppCompatActivity {
     Button button;
     String objectId;
     RatingBar ratingBar;
-    ParseObject parseObject;;
+    ParseObject parseObject;
 
     public static class DownloadImage extends AsyncTask<String,Void, Bitmap> {
 

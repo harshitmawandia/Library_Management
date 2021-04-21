@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/newest"
+        android:title="Newest First" />
+    <item
+        android:id="@+id/popularity"
+        android:title="By Popularity" />
+    <item
+        android:id="@+id/rating"
+        android:title="By Rating" />
+</menu>
