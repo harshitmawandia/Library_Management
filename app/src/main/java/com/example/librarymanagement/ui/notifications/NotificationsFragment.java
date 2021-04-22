@@ -44,18 +44,22 @@ public class NotificationsFragment extends Fragment {
         TextView userInfo = root.findViewById(R.id.userInfoTextView);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User2");
-        query.whereMatches("username", ParseUser.getCurrentUser().getUsername());
-        Log.i("user",ParseUser.getCurrentUser().getUsername());
+        try {
+            query.whereMatches("username", ParseUser.getCurrentUser().getUsername());
+            Log.i("user", ParseUser.getCurrentUser().getUsername());
 
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                Log.i("user",objects.get(0).getString("role"));
-                String role = objects.get(0).getString("role");
-                String s = "Username : "+ ParseUser.getCurrentUser().getString("username")+"\n\nEmail-id : "+ ParseUser.getCurrentUser().getString("email")+"\n\nRole : "+  role;
-                userInfo.setText(s);
-            }
-        });
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    Log.i("user", objects.get(0).getString("role"));
+                    String role = objects.get(0).getString("role");
+                    String s = "Username : " + ParseUser.getCurrentUser().getString("username") + "\n\nEmail-id : " + ParseUser.getCurrentUser().getString("email") + "\n\nRole : " + role;
+                    userInfo.setText(s);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
 
@@ -74,6 +78,11 @@ public class NotificationsFragment extends Fragment {
                         if(e==null){
 
                             Intent intent = new Intent(getContext(), MainActivity.class);
+                            try {
+                                MainActivity.mGoogleSignInClient.signOut();
+                            }catch (Exception e1){
+                                e1.printStackTrace();
+                            }
 
                             startActivity(intent);
                         }

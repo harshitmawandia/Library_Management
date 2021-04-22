@@ -56,10 +56,11 @@ import static android.provider.ContactsContract.Intents.Insert.EMAIL;
 
 public class MainActivity extends AppCompatActivity {
 
+
     EditText username,password;
-    GoogleSignInClient mGoogleSignInClient;
-    CallbackManager callbackManager ;
-    LoginButton loginButton;
+    public static GoogleSignInClient mGoogleSignInClient;
+    public static  GoogleSignInAccount account;
+
 
     public  void signIn(View view){
         if (username.getText().toString().matches("") || password.getText().toString().matches("")){
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             user.signUpInBackground(new SignUpCallback() {
                 @Override
                 public void done(ParseException e) {
+
                     if (e == null) {
                         user1.put("username",account.getEmail());
                         user1.saveInBackground();
@@ -153,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void done(List<ParseObject> objects, ParseException e) {
                                         if(objects.get(0).getString("role").matches("user")){
+
                                             Intent intent = new Intent(getApplicationContext(),UserActivity.class);
                                             startActivity(intent);
                                         }else if(objects.get(0).getString("role").matches("librarian")){
@@ -208,12 +211,13 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        account = GoogleSignIn.getLastSignedInAccount(this);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if(account!=null) {
             ParseUser.logInInBackground(account.getEmail(),account.getEmail());
         }
+
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -59,6 +59,11 @@ public class NotificationsFragment2 extends Fragment {
                     public void done(ParseException e) {
                         if(e==null){
                             Intent intent = new Intent(getContext(), MainActivity.class);
+                            try {
+                                MainActivity.mGoogleSignInClient.signOut();
+                            }catch (Exception e1){
+                                e1.printStackTrace();
+                            }
                             startActivity(intent);
                         }
                     }
