@@ -16,82 +16,111 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/library" />
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="383dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="15dp"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="383dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="15dp"
-        android:ems="10"
-        android:hint="email"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="383dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="172dp"
-        android:layout_marginEnd="15dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPersonName"
-        android:password="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/button1"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="130dp"
-        android:onClick="signUp"
-        android:text="Sign Up"
-        android:textSize="18sp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="133dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="140dp"
-        android:background="#A87979"
-        android:backgroundTint="#CC9B9B"
-        android:gravity="center"
-        android:onClick="signInActivity"
-        android:text="or, Sign In"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="383dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="15dp"
+                android:ems="10"
+                android:hint="email"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="383dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:ems="10"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="383dp"
+                android:layout_height="63dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPersonName"
+                android:password="true"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/OTP"
+                    android:layout_width="250dp"
+                    android:layout_height="63dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:ems="10"
+                    android:hint="Enter OTP sent to mail"
+                    android:inputType="textPersonName"
+                    android:password="true"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@+id/username" />
+
+                <Button
+                    android:id="@+id/button6"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:onClick="sendOTP"
+                    android:text="Send OTP" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="130dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="130dp"
+                android:gravity="center"
+                android:onClick="signUp"
+                android:text="Sign Up"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="133dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="136dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="136dp"
+                android:background="#A87979"
+                android:backgroundTint="#CC9B9B"
+                android:gravity="center"
+                android:onClick="signInActivity"
+                android:text="or, Sign In"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

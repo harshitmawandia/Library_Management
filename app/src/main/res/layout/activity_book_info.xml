@@ -23,7 +23,7 @@
                 android:id="@+id/bookCover"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                app:srcCompat="@drawable/mr_dialog_material_background_light" />
+                app:srcCompat="@drawable/ic_launcher_background" />
 
             <TextView
                 android:id="@+id/titleTextView"
