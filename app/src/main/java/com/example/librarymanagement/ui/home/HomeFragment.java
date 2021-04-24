@@ -207,8 +207,9 @@ public class HomeFragment extends Fragment {
                     public void done(List<ParseObject> objects, ParseException e) {
                         if(e==null){
                             if(objects.size()>0) {
+                                books.clear();
                                 for (ParseObject object : objects) {
-                                    books.clear();
+
                                     books.add(object.getString("title"));
                                     ids.add(object.getObjectId());
                                     arrayAdapter.notifyDataSetChanged();
